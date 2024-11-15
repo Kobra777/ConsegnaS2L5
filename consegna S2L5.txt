@@ -1,0 +1,59 @@
+CONSEGNA S2L5
+
+Il programma simula un assistente virtuale che risponde a domande precise. 
+C’è una funzione, assistente_virtuale(comando), che interpreta quello che scrivi e ti risponde.
+Se chiedi “Qual è la data di oggi?”, ti dice la data corrente. Se chiedi “Che ore sono?”, ti dice l’ora. 
+Se gli chiedi “Come ti chiami?”, ti risponde con il suo nome, “Assistente Virtuale”. 
+Se invece scrivi qualcosa che non riconosce, ti risponde “Non ho capito la tua domanda.” 
+Il programma va avanti a chiederti input finché non scrivi “esci”, che lo fa chiudere.
+
+Casistiche Non Gestite
+
+1) Il programma distingue tra maiuscole e minuscole, quindi se scrivi “qual è la data di oggi?” tutto in minuscolo, non capirà. 
+Serve digitare esattamente come è programmato, e questo lo rende poco flessibile.
+Input incompleti o vaghi: Se scrivi solo “data” o “ora” senza la frase completa, l’assistente non risponde in modo utile. 
+Funziona solo con frasi precise, quindi input parziali o ambigui lo mandano in tilt.
+Frasi non identiche: Comandi simili ma non esatti, come “Mi dici l’ora per favore?”, non vengono riconosciuti. 
+Il programma accetta solo frasi predefinite e non è in grado di interpretare variazioni.
+Errori di Sintassi/Logica
+
+2) Ogni if verifica una frase intera e precisa, quindi il programma non funziona correttamente con variazioni o parole diverse. 
+Anche una piccola differenza fa sì che il comando non venga riconosciuto.
+
+3) Tutto il codice è inserito nel ciclo while principale, senza modularità. 
+Separare la logica in una funzione specifica renderebbe il programma più organizzato e facile da gestire.
+
+CORREZIONE
+
+import datetime
+
+def assistente_virtuale(comando):
+    # soluzione 1 con .lower()
+    comando = comando.lower()
+
+    # soluzione 2, usiamo parole chiave per rendere il controllo meno rigido
+    if "data" in comando:
+        oggi = datetime.date.today()
+        risposta = "La data di oggi è " + oggi.strftime("%d/%m/%Y")
+    elif "ora" in comando:
+        ora_attuale = datetime.datetime.now().time()
+        risposta = "L'ora attuale è " + ora_attuale.strftime("%H:%M")
+    elif "nome" in comando:
+        risposta = "Mi chiamo Assistente Virtuale"
+    else:
+        risposta = "Non ho capito la tua domanda."
+
+    return risposta
+
+# soluzione 3, usiamo una funzione main per modularizzare il codice
+def main():
+    while True:
+        comando_utente = input("Cosa vuoi sapere? ")
+        if comando_utente.lower() == "esci":
+            print("Arrivederci!")
+            break
+
+        risposta = assistente_virtuale(comando_utente)
+        print(risposta)
+
+main()
